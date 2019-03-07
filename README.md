@@ -1,0 +1,2 @@
+# idleClickerReact
+Practicing React
