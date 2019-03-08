@@ -46,6 +46,7 @@ class App extends Component {
     const index = upgrades.indexOf(upgrade);
     upgrades[index] = { ...upgrade };
     upgrades[index].currentRank++;
+    upgrades[index].cost += 10;
     this.setState({ upgrades });
   };
 
@@ -56,7 +57,7 @@ class App extends Component {
         <ClickerZone onClickZone={this.handleClickZone} />
         <UpgradeMenu
           onCost={this.handleCost}
-          clicker={this.state.clicker}
+          currency={this.state.clicker.currencyClicks}
           upgrades={this.state.upgrades}
           onUpgrade={this.handleUpgrade}
         />
