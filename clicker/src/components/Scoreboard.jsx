@@ -1,7 +1,7 @@
-import React from "react";
+import React, { Component } from "react";
 
-const Scoreboard = ({ currencyClicks }) => {
-  return <nav> {currencyClicks} </nav>;
-};
-
-export default Scoreboard;
+export default class Scoreboard extends Component {
+  render() {
+    return <nav> {this.props.currencyClicks} </nav>;
+  }
+}
