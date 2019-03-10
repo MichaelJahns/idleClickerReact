@@ -3,19 +3,50 @@ import Scoreboard from "./components/Scoreboard";
 import ClickerZone from "./components/ClickerZone";
 import "./App.css";
 import UpgradeMenu from "./components/UpgradeMenu";
+import Autoclicker from "./components/Autoclicker";
 
 class App extends Component {
   state = {
     clicker: {
+      clickPower: 1,
       totalClicks: 0,
       currencyClicks: 0
     },
     upgrades: [
       {
-        name: "Clicker Power",
+        name: "Clicker Power Rnk I",
+        increment: 1,
         currentRank: 0,
         maxRank: 10,
-        cost: 50
+        cost: 10
+      },
+      {
+        name: "Clicker Power Rnk II",
+        increment: 10,
+        currentRank: 0,
+        maxRank: 10,
+        cost: 500
+      },
+      {
+        name: "Clicker Power Rnk III",
+        increment: 100,
+        currentRank: 0,
+        maxRank: 10,
+        cost: 5000
+      },
+      {
+        name: "Clicker Power Rnk IV",
+        increment: 1000,
+        currentRank: 0,
+        maxRank: 10,
+        cost: 500000
+      },
+      {
+        name: "Clicker Power Rnk V",
+        increment: 10000,
+        currentRank: 0,
+        maxRank: 10,
+        cost: 50000000
       },
       {
         name: "Passive Income",
@@ -28,14 +59,14 @@ class App extends Component {
 
   handleClickZone = e => {
     const clicker = this.state.clicker;
-    clicker.totalClicks++;
-    clicker.currencyClicks++;
+    clicker.totalClicks += this.state.clicker.clickPower;
+    clicker.currencyClicks += this.state.clicker.clickPower;
     this.setState({ clicker });
   };
 
   handleCost = upgrade => {
-    console.log(upgrade.cost, "paid");
     let clicker = this.state.clicker;
+    clicker.clickPower += upgrade.increment;
     clicker.currencyClicks -= upgrade.cost;
 
     this.setState({ clicker });
@@ -46,7 +77,16 @@ class App extends Component {
     const index = upgrades.indexOf(upgrade);
     upgrades[index] = { ...upgrade };
     upgrades[index].currentRank++;
+    upgrades[index].cost = Math.ceil(upgrades[index].cost * 1.25);
     this.setState({ upgrades });
+  };
+
+  handleTick = () => {
+    console.log("entered");
+    const clicker = this.state.clicker;
+    clicker.totalClicks += this.state.clicker.clickPower;
+    clicker.currencyClicks += this.state.clicker.clickPower;
+    this.setState({ clicker });
   };
 
   render() {
@@ -54,9 +94,10 @@ class App extends Component {
       <React.Fragment>
         <Scoreboard currencyClicks={this.state.clicker.currencyClicks} />
         <ClickerZone onClickZone={this.handleClickZone} />
+        <Autoclicker onTick={this.handleTick} />
         <UpgradeMenu
           onCost={this.handleCost}
-          clicker={this.state.clicker}
+          currency={this.state.clicker.currencyClicks}
           upgrades={this.state.upgrades}
           onUpgrade={this.handleUpgrade}
         />

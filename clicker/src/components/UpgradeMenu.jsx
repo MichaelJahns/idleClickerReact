@@ -11,7 +11,7 @@ export default class UpgradeMenu extends Component {
             onCost={this.props.onCost}
             onUpgrade={this.props.onUpgrade}
             upgrade={upgrade}
-            currency={this.props.clicker.currencyClicks}
+            currency={this.props.currency}
           />
         ))}
       </div>
