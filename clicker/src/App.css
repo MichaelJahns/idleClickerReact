@@ -35,8 +35,8 @@
 /*  */
 .ClickZone {
   border: red 1px solid;
-  height: 40px;
-  width: 40px;
+  height: 250px;
+  width: 250px;
 }
 .ClickZone:hover {
   cursor: pointer;

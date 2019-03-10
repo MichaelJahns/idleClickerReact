@@ -3,6 +3,7 @@ import Scoreboard from "./components/Scoreboard";
 import ClickerZone from "./components/ClickerZone";
 import "./App.css";
 import UpgradeMenu from "./components/UpgradeMenu";
+import Autoclicker from "./components/Autoclicker";
 
 class App extends Component {
   state = {
@@ -20,28 +21,28 @@ class App extends Component {
         cost: 10
       },
       {
-        name: "Clicker Powere Rnk II",
+        name: "Clicker Power Rnk II",
         increment: 10,
         currentRank: 0,
         maxRank: 10,
         cost: 500
       },
       {
-        name: "Clicker Powere Rnk III",
+        name: "Clicker Power Rnk III",
         increment: 100,
         currentRank: 0,
         maxRank: 10,
         cost: 5000
       },
       {
-        name: "Clicker Powere Rnk IV",
+        name: "Clicker Power Rnk IV",
         increment: 1000,
         currentRank: 0,
         maxRank: 10,
         cost: 500000
       },
       {
-        name: "Clicker Powere Rnk V",
+        name: "Clicker Power Rnk V",
         increment: 10000,
         currentRank: 0,
         maxRank: 10,
@@ -80,11 +81,20 @@ class App extends Component {
     this.setState({ upgrades });
   };
 
+  handleTick = () => {
+    console.log("entered");
+    const clicker = this.state.clicker;
+    clicker.totalClicks += this.state.clicker.clickPower;
+    clicker.currencyClicks += this.state.clicker.clickPower;
+    this.setState({ clicker });
+  };
+
   render() {
     return (
       <React.Fragment>
         <Scoreboard currencyClicks={this.state.clicker.currencyClicks} />
         <ClickerZone onClickZone={this.handleClickZone} />
+        <Autoclicker onTick={this.handleTick} />
         <UpgradeMenu
           onCost={this.handleCost}
           currency={this.state.clicker.currencyClicks}
