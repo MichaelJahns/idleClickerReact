@@ -11,7 +11,6 @@ export default class Upgrade extends Component {
         </p>
         <button
           disabled={this.getDisabled()}
-          value="ClickerPower"
           onClick={() =>
             this.props.onUpgrade(this.props.upgrade) &
             this.props.onCost(this.props.upgrade)

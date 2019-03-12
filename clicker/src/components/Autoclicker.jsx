@@ -4,7 +4,7 @@ export default class Autoclicker extends Component {
   componentDidMount() {
     this.timerID = setInterval(
       () => this.tick(),
-      this.props.clicker.autoclicker.interval
+      this.props.clicker.auto_interval
     );
   }
   componentWillUnmount() {
@@ -14,9 +14,9 @@ export default class Autoclicker extends Component {
     return (
       <ul>
         Autoclicker
-        <li> Interval: {this.props.clicker.autoclicker.interval} </li>
-        <li> Agents: {this.props.clicker.autoclicker.agents} </li>
-        <li> Strength: {this.props.clicker.autoclicker.strength} </li>
+        <li> Interval: {this.props.clicker.auto_interval} </li>
+        <li> Agents: {this.props.clicker.auto_agents} </li>
+        <li> Strength: {this.props.clicker.auto_strength} </li>
       </ul>
     );
   }
