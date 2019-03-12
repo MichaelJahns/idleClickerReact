@@ -10,7 +10,12 @@ class App extends Component {
     clicker: {
       clickPower: 1,
       totalClicks: 0,
-      currencyClicks: 0
+      currencyClicks: 0,
+      autoclicker: {
+        interval: 5000,
+        strength: 1,
+        agents: 0
+      }
     },
     upgrades: [
       {
@@ -66,6 +71,7 @@ class App extends Component {
 
   handleCost = upgrade => {
     let clicker = this.state.clicker;
+    //migrate the below line to unique function that tracks whats supposed to be upgraded
     clicker.clickPower += upgrade.increment;
     clicker.currencyClicks -= upgrade.cost;
 
@@ -82,10 +88,14 @@ class App extends Component {
   };
 
   handleTick = () => {
-    console.log("entered");
+    console.log("tick");
     const clicker = this.state.clicker;
-    clicker.totalClicks += this.state.clicker.clickPower;
-    clicker.currencyClicks += this.state.clicker.clickPower;
+    clicker.totalClicks +=
+      this.state.clicker.autoclicker.strength *
+      this.state.clicker.autoclicker.agents;
+    clicker.currencyClicks +=
+      this.state.clicker.autoclicker.strength *
+      this.state.clicker.autoclicker.agents;
     this.setState({ clicker });
   };
 
@@ -94,7 +104,7 @@ class App extends Component {
       <React.Fragment>
         <Scoreboard currencyClicks={this.state.clicker.currencyClicks} />
         <ClickerZone onClickZone={this.handleClickZone} />
-        <Autoclicker onTick={this.handleTick} />
+        <Autoclicker onTick={this.handleTick} clicker={this.state.clicker} />
         <UpgradeMenu
           onCost={this.handleCost}
           currency={this.state.clicker.currencyClicks}
