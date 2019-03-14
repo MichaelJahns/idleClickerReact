@@ -3,23 +3,18 @@ import React, { Component } from "react";
 export default class Upgrade extends Component {
   render() {
     return (
-      <aside>
-        {this.props.children}
-        <h3> {this.props.upgrade.name} </h3>
-        <p>
-          {this.props.upgrade.currentRank}/{this.props.upgrade.maxRank}
-        </p>
-        <button
-          disabled={this.getDisabled()}
-          value="ClickerPower"
-          onClick={() =>
-            this.props.onUpgrade(this.props.upgrade) &
-            this.props.onCost(this.props.upgrade)
-          }
-        >
-          Upgrade!
-        </button>
-      </aside>
+      <button
+        className="upgrade"
+        disabled={this.getDisabled()}
+        onClick={() =>
+          this.props.onClickUpgrade(this.props.upgrade) &
+          this.props.onCost(this.props.upgrade)
+        }
+      >
+        <h3>{this.props.upgrade.name}</h3>
+        <h4> Rank: {this.props.upgrade.currentRank} </h4>
+        <h4> {this.props.upgrade.cost} coins </h4>
+      </button>
     );
   }
   getDisabled() {

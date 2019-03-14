@@ -36,8 +36,18 @@
 .ClickZone {
   border: red 1px solid;
   height: 250px;
-  width: 250px;
+  width: 100%;
 }
 .ClickZone:hover {
   cursor: pointer;
+}
+
+.upgradeMenu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.upgrade {
+  width: 125px;
 }
