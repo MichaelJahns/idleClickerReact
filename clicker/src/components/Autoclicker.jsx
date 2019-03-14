@@ -11,14 +11,7 @@ export default class Autoclicker extends Component {
     clearInterval(this.timerID);
   }
   render() {
-    return (
-      <ul>
-        Autoclicker
-        <li> Interval: {this.props.clicker.auto_interval} </li>
-        <li> Agents: {this.props.clicker.auto_agents} </li>
-        <li> Strength: {this.props.clicker.auto_strength} </li>
-      </ul>
-    );
+    return <p> Timer </p>;
   }
   tick() {
     this.props.onTick();
