@@ -1,96 +1,104 @@
 import React, { Component } from "react";
 import Scoreboard from "./components/Scoreboard";
 import ClickerZone from "./components/ClickerZone";
-import "./App.css";
-import UpgradeMenu from "./components/UpgradeMenu";
+import Shop from "./components/Shop";
 import Autoclicker from "./components/Autoclicker";
+import "./App.css";
 
 class App extends Component {
   state = {
     clicker: {
       tierUnlocked: 0,
       clickPower: 1,
-      currency: 0,
+      currency: 100000000,
       totalCurrency: 0,
-      auto_interval: 1000,
-      auto_strength: 0
+      autoInterval: 5000,
+      income: 0
     },
-    upgrades: {
-      clickerUpgrades: [
-        {
-          id: 0,
-          name: "Clicker Power",
-          affects: "clickPower",
-          increment: 1,
-          currentRank: 0,
-          maxRank: 10,
-          cost: 10,
-          selfIncrement: 15
-        }
-      ],
-      agentUpgrades: [
-        {
-          id: 0,
-          name: "Farmer",
-          income: 5,
-          modifer: 1,
-          currentRank: 0,
-          maxRank: 999,
-          cost: 25,
-          selfIncrement: 1.1
-        },
-        {
-          id: 1,
-          name: "Town Guard",
-          income: 15,
-          modifer: 1,
-          currentRank: 0,
-          maxRank: 999,
-          cost: 100,
-          selfIncrement: 1.5
-        },
-        {
-          id: 2,
-          name: "Innkeeper",
-          income: 50,
-          modifer: 1,
-          currentRank: 0,
-          maxRank: 999,
-          cost: 1000,
-          selfIncrement: 2
-        },
-        {
-          id: 3,
-          name: "Merchant",
-          income: 100,
-          modifer: 1,
-          currentRank: 0,
-          maxRank: 999,
-          cost: 10000,
-          selfIncrement: 2.5
-        },
-        {
-          id: 4,
-          name: "Master at Arms",
-          income: 200,
-          modifer: 1,
-          currentRank: 0,
-          maxRank: 999,
-          cost: 20000,
-          selfIncrement: 3
-        },
-        {
-          id: 5,
-          name: "Mayor",
-          income: 500,
-          modifer: 1,
-          currentRank: 0,
-          maxRank: 999,
-          cost: 50000,
-          selfIncrement: 5
-        }
-      ]
-    }
+    clickerUpgrades: [
+      {
+        id: 0,
+        name: "Clicker Power",
+        affects: "clickPower",
+        currentRank: 0,
+        increment: 1,
+        maxRank: 10,
+        cost: 10,
+        selfIncrement: 15
+      },
+      {
+        id: 0,
+        name: "Auto Interval",
+        affects: "autoInterval",
+        currentRank: 0,
+        increment: -500,
+        maxRank: 10,
+        cost: 100,
+        selfIncrement: 1
+      }
+    ],
+    agentUpgrades: [
+      {
+        id: 0,
+        name: "Farmer",
+        currentRank: 0,
+        income: 5,
+        modifer: 1,
+        maxRank: 999,
+        cost: 25,
+        selfIncrement: 1.1
+      },
+      {
+        id: 1,
+        name: "Town Guard",
+        currentRank: 0,
+        income: 15,
+        modifer: 1,
+        maxRank: 999,
+        cost: 100,
+        selfIncrement: 1.5
+      },
+      {
+        id: 2,
+        name: "Innkeeper",
+        currentRank: 0,
+        income: 50,
+        modifer: 1,
+        maxRank: 999,
+        cost: 1000,
+        selfIncrement: 2
+      },
+      {
+        id: 3,
+        name: "Merchant",
+        currentRank: 0,
+        income: 100,
+        modifer: 1,
+        maxRank: 999,
+        cost: 10000,
+        selfIncrement: 2.5
+      },
+      {
+        id: 4,
+        name: "Master at Arms",
+        currentRank: 0,
+        income: 200,
+        modifer: 1,
+        maxRank: 999,
+        cost: 20000,
+        selfIncrement: 3
+      },
+      {
+        id: 5,
+        name: "Mayor",
+        currentRank: 0,
+        income: 500,
+        modifer: 1,
+        maxRank: 999,
+        cost: 50000,
+        selfIncrement: 5
+      }
+    ]
   };
 
   handleClickZone = e => {
@@ -109,22 +117,49 @@ class App extends Component {
   };
 
   handleClickUpgrade = upgrade => {
-    const upgrades = [...this.state.upgrades[0]];
-    const index = upgrades.indexOf(upgrade);
-    upgrades[index] = { ...upgrade };
-    upgrades[index].currentRank++;
-    upgrades[index].increment = Math.ceil(
-      upgrades[index].increment * upgrade.selfIncrement
+    const clickerUpgrades = [...this.state.clickerUpgrades];
+    const index = clickerUpgrades.indexOf(upgrade);
+    clickerUpgrades[index] = { ...upgrade };
+    clickerUpgrades[index].currentRank++;
+    clickerUpgrades[index].increment = Math.ceil(
+      clickerUpgrades[index].increment * upgrade.selfIncrement
     );
-    upgrades[index].cost = Math.ceil(
-      upgrades[index].cost * upgrade.selfIncrement
+    clickerUpgrades[index].cost = Math.ceil(
+      clickerUpgrades[index].cost * upgrade.selfIncrement
     );
-    this.setState({ upgrades });
+    this.setState({ clickerUpgrades });
+  };
+
+  handleAgentUpgrade = upgrade => {
+    const agentUpgrades = [...this.state.agentUpgrades];
+    const index = agentUpgrades.indexOf(upgrade);
+    agentUpgrades[index] = { ...upgrade };
+    agentUpgrades[index].currentRank++;
+    agentUpgrades[index].increment = Math.ceil(
+      agentUpgrades[index].increment * upgrade.selfIncrement
+    );
+    agentUpgrades[index].cost = Math.ceil(
+      agentUpgrades[index].cost * upgrade.selfIncrement
+    );
+
+    this.updateIncome(agentUpgrades);
+
+    this.setState({ agentUpgrades });
+  };
+
+  updateIncome = agentUpgrades => {
+    const clicker = this.state.clicker;
+    const income = agentUpgrades.reduce((accumulator, current) => {
+      accumulator += current.income * current.currentRank * current.modifer;
+      return accumulator;
+    }, 0);
+    clicker.income = income;
+    this.setState({ clicker });
   };
 
   handleTick = () => {
     const clicker = this.state.clicker;
-    clicker.currency += this.state.clicker.auto_strength;
+    clicker.currency += this.state.clicker.income;
     this.setState({ clicker });
   };
 
@@ -134,11 +169,13 @@ class App extends Component {
         <Scoreboard clicker={this.state.clicker} />
         <ClickerZone onClickZone={this.handleClickZone} />
         <Autoclicker onTick={this.handleTick} clicker={this.state.clicker} />
-        <UpgradeMenu
+        <Shop
           onCost={this.handleCost}
           currency={this.state.clicker.currency}
-          upgrades={this.state.upgrades}
+          clickerUpgrades={this.state.clickerUpgrades}
+          agentUpgrades={this.state.agentUpgrades}
           onClickUpgrade={this.handleClickUpgrade}
+          onAgentUpgrade={this.handleAgentUpgrade}
         />
       </React.Fragment>
     );
