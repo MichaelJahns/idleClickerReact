@@ -7,7 +7,7 @@ export default class Upgrade extends Component {
         className="upgrade"
         disabled={this.getDisabled()}
         onClick={() =>
-          this.props.onClickUpgrade(this.props.upgrade) &
+          this.props.onUpgrade(this.props.upgrade) &
           this.props.onCost(this.props.upgrade)
         }
       >
